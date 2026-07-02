@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vizyon ve Atmosfer Arşivi | The Core Zen</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Shibumi Renk Paleti ve Temel Ayarlar */
+        :root {
+            --bg-color: #0f0f11;
+            --surface-color: #1a1a1c;
+            --text-primary: #e0e0e0;
+            --text-muted: #888888;
+            --accent-color: #4a4a4c;
+            --danger-color: #5c2b2b;
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Raleway', sans-serif;
+            --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Navigasyon */
+        header {
+            padding: 2rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #222;
+        }
+
+        .back-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: var(--transition);
+        }
+        .back-link:hover { color: var(--text-primary); }
+
+        .logo {
+            font-family: var(--font-serif);
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+            font-weight: 400;
+        }
+
+        .btn {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--accent-color);
+            padding: 0.6rem 1.5rem;
+            cursor: pointer;
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+        .btn:hover { background: var(--text-primary); color: var(--bg-color); }
+        .btn-danger { border-color: var(--danger-color); color: #d48a8a; }
+        .btn-danger:hover { background: var(--danger-color); color: #fff; }
+
+        /* Dashboard Görünümü (Dergi Kapakları) */
+        main { padding: 4rem; min-height: 80vh; }
+        
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 3rem;
+        }
+
+        .magazine-card {
+            position: relative;
+            height: 450px;
+            background-color: var(--surface-color);
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        .magazine-card:hover { transform: translateY(-5px); }
+        
+        .card-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+            transition: var(--transition);
+        }
+        .magazine-card:hover .card-img { opacity: 0.9; transform: scale(1.03); }
+
+        .card-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+        }
+
+        .card-title {
+            font-family: var(--font-serif);
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+        }
+        .card-meta { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;}
+
+        /* Form ve Modal Arayüzü */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-color);
+            z-index: 100;
+            overflow-y: auto;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .overlay.active { display: block; opacity: 1; }
+
+        .modal-content {
+            max-width: 800px;
+            margin: 4rem auto;
+            padding: 2rem;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .modal-title { font-family: var(--font-serif); font-size: 2rem; font-weight: 400; }
+
+        /* Form Elemanları */
+        .form-group { margin-bottom: 2rem; }
+        label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid var(--accent-color);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            font-size: 1.1rem;
+            padding: 0.5rem 0;
+            transition: var(--transition);
+        }
+        input:focus, textarea:focus { outline: none; border-bottom-color: var(--text-primary); }
+        textarea { resize: vertical; min-height: 100px; }
+
+        /* Duygu Seçimi (Taglar) */
+        .emotion-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin-top: 0.5rem;
+        }
+        .emotion-tag {
+            padding: 0.4rem 1rem;
+            border: 1px solid var(--accent-color);
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+            user-select: none;
+        }
+        .emotion-tag.selected { background: var(--text-primary); color: var(--bg-color); }
+        
+        .custom-emotion {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .custom-emotion input { font-size: 0.85rem; border-bottom: 1px dashed var(--accent-color); width: 120px; padding: 0.2rem;}
+
+        /* Medya Yükleme Alanı */
+        .media-group {
+            background: var(--surface-color);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        .media-row { display: flex; gap: 1rem; margin-bottom: 1rem; }
+        .media-row input { flex: 1; }
+        .remove-media {
+            position: absolute; right: 1rem; top: 1rem;
+            background: none; border: none; color: var(--text-muted);
+            cursor: pointer; font-size: 1.2rem;
+        }
+
+        /* Detay Görünümü (View Mode) */
+        #view-details { font-family: var(--font-serif); }
+        .view-meta { color: var(--text-muted); font-family: var(--font-sans); font-size: 0.9rem; margin-bottom: 2rem; letter-spacing: 1px; }
+        .view-emotions { margin-bottom: 2rem; font-family: var(--font-sans); display: flex; gap: 1rem; flex-wrap: wrap; }
+        .view-emotion-badge { background: #222; padding: 0.3rem 0.8rem; border-radius: 2px; font-size: 0.8rem; color: #ccc; }
+        .view-desc { font-size: 1.2rem; line-height: 1.8; margin-bottom: 3rem; white-space: pre-wrap; }
+        .view-gallery { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-bottom: 3rem;}
+        .view-gallery img { width: 100%; height: auto; border-radius: 2px; }
+
+        .empty-state { text-align: center; color: var(--text-muted); font-family: var(--font-serif); font-size: 1.2rem; margin-top: 5rem; grid-column: 1 / -1;}
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="back-link">← THE CORE ZEN</a>
+        <div class="logo">Vizyon & Atmosfer</div>
+        <button class="btn" onclick="openForm()">+ YENİ VİZYON</button>
+    </header>
+
+    <main>
+        <div class="grid-container" id="dashboard-grid">
+            <!-- Kartlar buraya JavaScript ile yüklenecek -->
+        </div>
+    </main>
+
+    <!-- EKLEME/DÜZENLEME FORMU MODALI -->
+    <div id="form-modal" class="overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Yeni Atmosfer Yarat</h2>
+                <button class="btn" onclick="closeModals()">Geri Dön</button>
+            </div>
+            
+            <form id="vision-form">
+                <div class="form-group">
+                    <label>Başlık</label>
+                    <input type="text" id="f-title" placeholder="Örn: Vakıf 4. Yıl Kutlaması" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Mekan & Zaman</label>
+                    <input type="text" id="f-location" placeholder="Örn: İstanbul Boğazı, Yaz Akşamı">
+                </div>
+
+                <div class="form-group">
+                    <label>Kişiler</label>
+                    <input type="text" id="f-people" placeholder="Bu senaryoda kimler var?">
+                </div>
+
+                <div class="form-group">
+                    <label>Tasarım Öncesi Ruh Halim (Neden bu vizyona ihtiyaç duydum?)</label>
+                    <div class="emotion-tags" id="pre-emotions-container">
+                        <div class="emotion-tag" onclick="toggleTag(this)">Mutlu</div>
+                        <div class="emotion-tag" onclick="toggleTag(this)">Huzurlu</div>
+                        <div class="emotion-tag" onclick="toggleTag(this)">Karışık / Bunalmış</div>
+                        <div class="emotion-tag" onclick="toggleTag(this)">Nötr</div>
+                        <div class="emotion-tag" onclick="toggleTag(this)">Aşk Dolu</div>
+                        <div class="custom-emotion">
+                            <input type="text" id="custom-emotion-input" placeholder="Farklı bir his...">
+                            <button type="button" class="btn" style="padding: 0.2rem 0.8rem;" onclick="addCustomEmotion()">Ekle</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Ham Duygu Etiketi (Bu anın dürüst hissi)</label>
+                    <input type="text" id="f-raw-emotion" placeholder="Örn: Yorgun ama sarsılmaz">
+                </div>
+
+                <div class="form-group">
+                    <label>Atmosfer & Betimleme</label>
+                    <textarea id="f-desc" placeholder="O anın dokusu, kokusu, üstündeki kumaşın hissi... Detaylıca yaz."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Görseller (Sınırsız eklenebilir)</label>
+                    <div id="media-container"></div>
+                    <button type="button" class="btn" onclick="addMediaField()" style="margin-top: 1rem;">+ Yeni Görsel Ekle</button>
+                </div>
+
+                <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 4rem;">
+                    <button type="button" class="btn" onclick="closeModals()" style="border:none; border-bottom: 1px solid var(--text-muted);">İptal Et</button>
+                    <button type="submit" class="btn">Arşive Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- DETAY GÖRÜNÜMÜ MODALI -->
+    <div id="view-modal" class="overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="v-title">Başlık</h2>
+                <div style="display: flex; gap: 1rem;">
+                    <button class="btn btn-danger" id="v-delete-btn">Sil</button>
+                    <button class="btn" onclick="closeModals()">Kapat</button>
+                </div>
+            </div>
+            
+            <div id="view-details">
+                <div class="view-meta" id="v-meta">Mekan - Kişiler</div>
+                
+                <div class="view-emotions" id="v-emotions-box">
+                    <!-- Dinamik rozetler buraya gelecek -->
+                </div>
+
+                <div class="view-desc" id="v-desc"></div>
+                
+                <div class="view-gallery" id="v-gallery">
+                    <!-- Görseller buraya -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Veritabanı (LocalStorage) Başlatma
+        let visions = JSON.parse(localStorage.getItem('zen_visions')) || [];
+        let currentViewingId = null;
+
+        // Sayfa yüklendiğinde çalışacaklar
+        document.addEventListener('DOMContentLoaded', () => {
+            renderDashboard();
+            addMediaField(); // Forma varsayılan 1 medya alanı ekle
+        });
+
+        // Dashboard'u Çiz
+        function renderDashboard() {
+            const grid = document.getElementById('dashboard-grid');
+            grid.innerHTML = '';
+
+            if (visions.length === 0) {
+                grid.innerHTML = '<div class="empty-state">Henüz bir vizyon eklenmedi. Yeni bir atmosfer yarat.</div>';
+                return;
+            }
+
+            // Yeniden eskiye sıralı
+            [...visions].reverse().forEach(v => {
+                const card = document.createElement('div');
+                card.className = 'magazine-card';
+                card.onclick = () => openView(v.id);
+                
+                // Kapak görselini bul (ilk geçerli görsel)
+                let coverImg = 'https://images.unsplash.com/photo-1490641815614-b45106d6fd04?q=80&w=800&auto=format&fit=crop'; // Varsayılan boş doku
+                if(v.images && v.images.length > 0) {
+                    coverImg = v.images[0];
+                }
+
+                card.innerHTML = `
+                    <img src="${coverImg}" class="card-img" alt="${v.title}">
+                    <div class="card-content">
+                        <div class="card-title">${v.title}</div>
+                        <div class="card-meta">${v.location || 'Bilinmeyen Zaman/Mekan'}</div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- TAG MANTIĞI ---
+        function toggleTag(element) {
+            element.classList.toggle('selected');
+        }
+
+        function addCustomEmotion() {
+            const input = document.getElementById('custom-emotion-input');
+            const val = input.value.trim();
+            if (val) {
+                const newTag = document.createElement('div');
+                newTag.className = 'emotion-tag selected';
+                newTag.textContent = val;
+                newTag.onclick = function() { toggleTag(this); };
+                
+                const container = document.getElementById('pre-emotions-container');
+                container.insertBefore(newTag, input.parentElement);
+                input.value = '';
+            }
+        }
+
+        function getSelectedEmotions() {
+            const tags = document.querySelectorAll('.emotion-tag.selected');
+            return Array.from(tags).map(t => t.textContent);
+        }
+
+        // --- MEDYA MANTIĞI ---
+        function addMediaField() {
+            const container = document.getElementById('media-container');
+            const id = Date.now();
+            const div = document.createElement('div');
+            div.className = 'media-group';
+            div.innerHTML = `
+                <button type="button" class="remove-media" onclick="this.parentElement.remove()">×</button>
+                <div class="media-row">
+                    <input type="text" class="media-url" placeholder="Görsel Linki (Örn: Pinterest imaj linki)">
+                </div>
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin: 0.5rem 0; text-align: center;">-- VEYA YEREL FOTOĞRAF YÜKLE --</div>
+                <div class="media-row">
+                    <input type="file" accept="image/*" class="media-file">
+                </div>
+            `;
+            container.appendChild(div);
+        }
+
+        // Dosyayı Base64'e çeviren yardımcı fonksiyon
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = error => reject(error);
+            });
+        }
+
+        // --- FORM İŞLEMLERİ ---
+        document.getElementById('vision-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Görselleri topla (Hem URL hem File)
+            const mediaGroups = document.querySelectorAll('.media-group');
+            let processedImages = [];
+            
+            for (let group of mediaGroups) {
+                const urlInput = group.querySelector('.media-url').value.trim();
+                const fileInput = group.querySelector('.media-file').files[0];
+                
+                if (fileInput) {
+                    try {
+                        const base64 = await fileToBase64(fileInput);
+                        processedImages.push(base64);
+                    } catch(err) { console.error("Fotoğraf dönüştürülemedi", err); }
+                } else if (urlInput) {
+                    processedImages.push(urlInput);
+                }
+            }
+
+            const newVision = {
+                id: Date.now().toString(),
+                title: document.getElementById('f-title').value,
+                location: document.getElementById('f-location').value,
+                people: document.getElementById('f-people').value,
+                preEmotions: getSelectedEmotions(),
+                rawEmotion: document.getElementById('f-raw-emotion').value,
+                description: document.getElementById('f-desc').value,
+                images: processedImages,
+                dateAdded: new Date().toISOString()
+            };
+
+            visions.push(newVision);
+            saveData();
+            
+            closeModals();
+            renderDashboard();
+            e.target.reset(); // Formu temizle
+            
+            // Etiket seçimlerini temizle
+            document.querySelectorAll('.emotion-tag.selected').forEach(t => t.classList.remove('selected'));
+            document.getElementById('media-container').innerHTML = ''; // Medyaları temizle
+            addMediaField(); // Tekrar 1 tane boş ekle
+        });
+
+        function deleteVision(id) {
+            if(confirm("Bu vizyonu arşivden silmek istediğine emin misin? Bu işlem geri alınamaz.")) {
+                visions = visions.filter(v => v.id !== id);
+                saveData();
+                closeModals();
+                renderDashboard();
+            }
+        }
+
+        // --- GÖRÜNÜM & MODAL KONTROLLERİ ---
+        function openForm() {
+            closeModals();
+            document.getElementById('form-modal').classList.add('active');
+        }
+
+        function openView(id) {
+            currentViewingId = id;
+            const v = visions.find(x => x.id === id);
+            if(!v) return;
+
+            document.getElementById('v-title').textContent = v.title;
+            
+            let metaText = [];
+            if(v.location) metaText.push(`📍 ${v.location}`);
+            if(v.people) metaText.push(`👥 ${v.people}`);
+            document.getElementById('v-meta').textContent = metaText.join('  |  ');
+
+            // Duygu rozetleri
+            const emotionsBox = document.getElementById('v-emotions-box');
+            emotionsBox.innerHTML = '';
+            
+            if(v.rawEmotion) {
+                emotionsBox.innerHTML += `<div class="view-emotion-badge" style="border-left: 2px solid var(--text-primary);">Ham: ${v.rawEmotion}</div>`;
+            }
+            if(v.preEmotions && v.preEmotions.length > 0) {
+                v.preEmotions.forEach(emo => {
+                    emotionsBox.innerHTML += `<div class="view-emotion-badge">Yaratım Öncesi: ${emo}</div>`;
+                });
+            }
+
+            document.getElementById('v-desc').textContent = v.description;
+
+            // Galeri
+            const gallery = document.getElementById('v-gallery');
+            gallery.innerHTML = '';
+            if(v.images && v.images.length > 0) {
+                v.images.forEach(imgSrc => {
+                    gallery.innerHTML += `<img src="${imgSrc}" alt="Vizyon Görseli">`;
+                });
+            }
+
+            document.getElementById('v-delete-btn').onclick = () => deleteVision(v.id);
+
+            document.getElementById('view-modal').classList.add('active');
+        }
+
+        function closeModals() {
+            document.getElementById('form-modal').classList.remove('active');
+            document.getElementById('view-modal').classList.remove('active');
+            currentViewingId = null;
+        }
+
+        function saveData() {
+            localStorage.setItem('zen_visions', JSON.stringify(visions));
+        }
+    </script>
+</body>
+</html>

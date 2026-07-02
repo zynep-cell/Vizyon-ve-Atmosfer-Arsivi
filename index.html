@@ -4,16 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vizyon ve Atmosfer Arşivi | The Core Zen</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        /* Shibumi Renk Paleti ve Temel Ayarlar */
+        /* Toz Pembesi ve Soft Shibumi Paleti */
         :root {
-            --bg-color: #0f0f11;
-            --surface-color: #1a1a1c;
-            --text-primary: #e0e0e0;
-            --text-muted: #888888;
-            --accent-color: #4a4a4c;
-            --danger-color: #5c2b2b;
+            --bg-color: #fcf6f6; /* Çok uçuk pudra/kırık beyaz */
+            --surface-color: #f4e9e9; /* Soft toz pembesi yüzey */
+            --text-primary: #3a2b2b; /* Koyu sıcak kahve/antrasit (okunabilirlik için) */
+            --text-muted: #8c7373; /* Yumuşatılmış metin rengi */
+            --accent-color: #d6babb; /* Vurgu pembe/gül kurusu */
+            --danger-color: #a85c5c;
             --font-serif: 'Playfair Display', serif;
             --font-sans: 'Raleway', sans-serif;
             --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -35,7 +35,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #222;
+            border-bottom: 1px solid var(--accent-color);
         }
 
         .back-link {
@@ -51,7 +51,7 @@
             font-family: var(--font-serif);
             font-size: 1.5rem;
             letter-spacing: 2px;
-            font-weight: 400;
+            font-weight: 600;
         }
 
         .btn {
@@ -64,41 +64,41 @@
             font-size: 0.9rem;
             letter-spacing: 1px;
             transition: var(--transition);
-            border-radius: 2px;
+            border-radius: 4px;
         }
         .btn:hover { background: var(--text-primary); color: var(--bg-color); }
-        .btn-danger { border-color: var(--danger-color); color: #d48a8a; }
+        .btn-danger { border-color: var(--danger-color); color: var(--danger-color); }
         .btn-danger:hover { background: var(--danger-color); color: #fff; }
 
-        /* Dashboard Görünümü (Dergi Kapakları) */
+        /* Dashboard Görünümü */
         main { padding: 4rem; min-height: 80vh; }
         
         .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
             gap: 3rem;
         }
 
         .magazine-card {
             position: relative;
-            height: 450px;
+            height: 480px;
             background-color: var(--surface-color);
             cursor: pointer;
             overflow: hidden;
-            border-radius: 2px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
             transition: var(--transition);
         }
 
-        .magazine-card:hover { transform: translateY(-5px); }
+        .magazine-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0,0,0,0.08); }
         
         .card-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0.7;
             transition: var(--transition);
         }
-        .magazine-card:hover .card-img { opacity: 0.9; transform: scale(1.03); }
+        .magazine-card:hover .card-img { transform: scale(1.05); }
 
         .card-content {
             position: absolute;
@@ -106,16 +106,17 @@
             left: 0;
             width: 100%;
             padding: 2rem;
-            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 100%);
+            background: linear-gradient(to top, rgba(252, 246, 246, 0.95) 0%, rgba(252, 246, 246, 0.8) 50%, rgba(252, 246, 246, 0) 100%);
         }
 
         .card-title {
             font-family: var(--font-serif);
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             margin-bottom: 0.5rem;
-            font-weight: 400;
+            font-weight: 600;
+            color: var(--text-primary);
         }
-        .card-meta { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px;}
+        .card-meta { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 500;}
 
         /* Form ve Modal Arayüzü */
         .overlay {
@@ -131,9 +132,12 @@
         .overlay.active { display: block; opacity: 1; }
 
         .modal-content {
-            max-width: 800px;
-            margin: 4rem auto;
-            padding: 2rem;
+            max-width: 1000px;
+            margin: 3rem auto;
+            padding: 3rem;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
         }
 
         .modal-header {
@@ -141,19 +145,32 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 3rem;
+            border-bottom: 1px solid var(--accent-color);
+            padding-bottom: 1.5rem;
         }
 
-        .modal-title { font-family: var(--font-serif); font-size: 2rem; font-weight: 400; }
+        .modal-title { font-family: var(--font-serif); font-size: 2.2rem; font-weight: 600; }
 
-        /* Form Elemanları */
+        /* Form Layout Sütunları */
+        .form-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 4rem;
+        }
+
+        @media (max-width: 768px) {
+            .form-layout { grid-template-columns: 1fr; gap: 2rem; }
+        }
+
         .form-group { margin-bottom: 2rem; }
         label {
             display: block;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             color: var(--text-muted);
             letter-spacing: 1px;
             text-transform: uppercase;
             margin-bottom: 0.5rem;
+            font-weight: 600;
         }
         input[type="text"], textarea {
             width: 100%;
@@ -163,62 +180,113 @@
             color: var(--text-primary);
             font-family: var(--font-sans);
             font-size: 1.1rem;
-            padding: 0.5rem 0;
+            padding: 0.8rem 0;
             transition: var(--transition);
         }
         input:focus, textarea:focus { outline: none; border-bottom-color: var(--text-primary); }
-        textarea { resize: vertical; min-height: 100px; }
+        textarea { resize: vertical; min-height: 120px; line-height: 1.8;}
 
-        /* Duygu Seçimi (Taglar) */
+        /* Duygu Seçimi (Taglar) - Sağ Sütun */
         .emotion-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 0.8rem;
-            margin-top: 0.5rem;
+            margin-top: 1rem;
         }
         .emotion-tag {
-            padding: 0.4rem 1rem;
+            padding: 0.5rem 1.2rem;
             border: 1px solid var(--accent-color);
-            border-radius: 20px;
-            font-size: 0.85rem;
+            border-radius: 30px;
+            font-size: 0.9rem;
             cursor: pointer;
             transition: var(--transition);
             user-select: none;
+            background: #fff;
         }
-        .emotion-tag.selected { background: var(--text-primary); color: var(--bg-color); }
+        .emotion-tag.selected { background: var(--text-primary); color: #fff; border-color: var(--text-primary); }
         
         .custom-emotion {
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            margin-top: 1rem;
+            width: 100%;
         }
-        .custom-emotion input { font-size: 0.85rem; border-bottom: 1px dashed var(--accent-color); width: 120px; padding: 0.2rem;}
+        .custom-emotion input { font-size: 0.9rem; border-bottom: 1px dashed var(--accent-color); padding: 0.4rem;}
 
         /* Medya Yükleme Alanı */
-        .media-group {
-            background: var(--surface-color);
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            position: relative;
-        }
-        .media-row { display: flex; gap: 1rem; margin-bottom: 1rem; }
-        .media-row input { flex: 1; }
-        .remove-media {
-            position: absolute; right: 1rem; top: 1rem;
-            background: none; border: none; color: var(--text-muted);
-            cursor: pointer; font-size: 1.2rem;
-        }
-
+        .media-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;}
+        .media-item { display: flex; gap: 1rem; align-items: center; background: var(--surface-color); padding: 0.8rem; border-radius: 6px;}
+        .media-item input { border: none; padding: 0.2rem; font-size: 0.9rem; }
+        
         /* Detay Görünümü (View Mode) */
-        #view-details { font-family: var(--font-serif); }
-        .view-meta { color: var(--text-muted); font-family: var(--font-sans); font-size: 0.9rem; margin-bottom: 2rem; letter-spacing: 1px; }
-        .view-emotions { margin-bottom: 2rem; font-family: var(--font-sans); display: flex; gap: 1rem; flex-wrap: wrap; }
-        .view-emotion-badge { background: #222; padding: 0.3rem 0.8rem; border-radius: 2px; font-size: 0.8rem; color: #ccc; }
-        .view-desc { font-size: 1.2rem; line-height: 1.8; margin-bottom: 3rem; white-space: pre-wrap; }
-        .view-gallery { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-bottom: 3rem;}
-        .view-gallery img { width: 100%; height: auto; border-radius: 2px; }
+        #view-details { font-family: var(--font-serif); position: relative;}
+        .view-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 4rem; }
+        
+        @media (max-width: 768px) {
+            .view-layout { grid-template-columns: 1fr; }
+        }
 
-        .empty-state { text-align: center; color: var(--text-muted); font-family: var(--font-serif); font-size: 1.2rem; margin-top: 5rem; grid-column: 1 / -1;}
+        .view-meta { color: var(--text-muted); font-family: var(--font-sans); font-size: 1rem; margin-bottom: 1.5rem; letter-spacing: 1px; font-weight: 500;}
+        .view-emotions { margin-bottom: 2rem; font-family: var(--font-sans); display: flex; gap: 1rem; flex-wrap: wrap; }
+        .view-emotion-badge { background: var(--surface-color); padding: 0.5rem 1rem; border-radius: 30px; font-size: 0.85rem; color: var(--text-primary); border: 1px solid var(--accent-color);}
+        
+        .view-desc { font-size: 1.25rem; line-height: 1.9; margin-bottom: 3rem; white-space: pre-wrap; color: var(--text-primary); }
+        
+        .view-gallery { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-bottom: 3rem;}
+        .view-gallery img { width: 100%; height: auto; border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.05);}
+        
+        .inspiration-links { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; font-family: var(--font-sans);}
+        .link-item { display: inline-block; padding: 0.8rem 1.5rem; background: #fff; border: 1px solid var(--accent-color); border-radius: 4px; text-decoration: none; color: var(--text-primary); transition: var(--transition); font-size: 0.9rem;}
+        .link-item:hover { background: var(--surface-color); transform: translateX(5px);}
+
+        /* Estetik Pikap (Plak Çalar) Animasyonu */
+        .audio-player-wrapper {
+            margin-top: 2rem;
+            padding: 2rem;
+            background: var(--surface-color);
+            border-radius: 12px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+        .record {
+            width: 120px; height: 120px;
+            background: #222;
+            border-radius: 50%;
+            border: 4px solid #111;
+            position: relative;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease;
+        }
+        .record:hover { transform: scale(1.05); }
+        .record.playing { animation: spin 4s linear infinite; }
+        .record::before {
+            content: ''; position: absolute;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 40px; height: 40px;
+            background: var(--accent-color);
+            border-radius: 50%;
+        }
+        .record::after {
+            content: ''; position: absolute;
+            top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 8px; height: 8px;
+            background: #fff;
+            border-radius: 50%;
+        }
+        .record-grooves {
+            position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: inset 0 0 0 10px rgba(0,0,0,0.5), inset 0 0 0 20px rgba(255,255,255,0.05);
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .empty-state { text-align: center; color: var(--text-muted); font-family: var(--font-serif); font-size: 1.3rem; margin-top: 5rem; grid-column: 1 / -1;}
     </style>
 </head>
 <body>
@@ -226,12 +294,12 @@
     <header>
         <a href="#" class="back-link">← THE CORE ZEN</a>
         <div class="logo">Vizyon & Atmosfer</div>
-        <button class="btn" onclick="openForm()">+ YENİ VİZYON</button>
+        <button class="btn" onclick="openForm()">+ YENİ VİZYON EKLE</button>
     </header>
 
     <main>
         <div class="grid-container" id="dashboard-grid">
-            <!-- Kartlar buraya JavaScript ile yüklenecek -->
+            <!-- Kartlar JavaScript ile buraya yüklenecek -->
         </div>
     </main>
 
@@ -239,60 +307,82 @@
     <div id="form-modal" class="overlay">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title">Yeni Atmosfer Yarat</h2>
-                <button class="btn" onclick="closeModals()">Geri Dön</button>
+                <h2 class="modal-title" id="form-title">Yeni Atmosfer Yarat</h2>
+                <button class="btn" onclick="closeModals()" style="border:none;">İptal / Kapat ✕</button>
             </div>
             
             <form id="vision-form">
-                <div class="form-group">
-                    <label>Başlık</label>
-                    <input type="text" id="f-title" placeholder="Örn: Vakıf 4. Yıl Kutlaması" required>
-                </div>
-                
-                <div class="form-group">
-                    <label>Mekan & Zaman</label>
-                    <input type="text" id="f-location" placeholder="Örn: İstanbul Boğazı, Yaz Akşamı">
-                </div>
+                <div class="form-layout">
+                    
+                    <!-- SOL SÜTUN: Ana Bilgiler -->
+                    <div class="form-main">
+                        <div class="form-group">
+                            <label>Başlık</label>
+                            <input type="text" id="f-title" placeholder="Örn: Mardin'de Düğün Akşamı" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Mekan & Zaman</label>
+                            <input type="text" id="f-location" placeholder="Örn: Tarihi Taş Konak, Ağustos Gün Batımı">
+                        </div>
 
-                <div class="form-group">
-                    <label>Kişiler</label>
-                    <input type="text" id="f-people" placeholder="Bu senaryoda kimler var?">
-                </div>
+                        <div class="form-group">
+                            <label>Kişiler</label>
+                            <input type="text" id="f-people" placeholder="Bu senaryoda kimler var? (Örn: Yakın arkadaşlar, Hasret...)">
+                        </div>
 
-                <div class="form-group">
-                    <label>Tasarım Öncesi Ruh Halim (Neden bu vizyona ihtiyaç duydum?)</label>
-                    <div class="emotion-tags" id="pre-emotions-container">
-                        <div class="emotion-tag" onclick="toggleTag(this)">Mutlu</div>
-                        <div class="emotion-tag" onclick="toggleTag(this)">Huzurlu</div>
-                        <div class="emotion-tag" onclick="toggleTag(this)">Karışık / Bunalmış</div>
-                        <div class="emotion-tag" onclick="toggleTag(this)">Nötr</div>
-                        <div class="emotion-tag" onclick="toggleTag(this)">Aşk Dolu</div>
-                        <div class="custom-emotion">
-                            <input type="text" id="custom-emotion-input" placeholder="Farklı bir his...">
-                            <button type="button" class="btn" style="padding: 0.2rem 0.8rem;" onclick="addCustomEmotion()">Ekle</button>
+                        <div class="form-group">
+                            <label>Fotoğraf & Kombin Görselleri</label>
+                            <div class="media-list" id="image-container"></div>
+                            <button type="button" class="btn" onclick="addImageField()" style="margin-top: 0.5rem;">+ Görsel Yükle/Link Ekle</button>
+                        </div>
+
+                        <div class="form-group">
+                            <label>İlham Linkleri (Pinterest, Web Sitesi vb.)</label>
+                            <div class="media-list" id="link-container"></div>
+                            <button type="button" class="btn" onclick="addUrlField()" style="margin-top: 0.5rem;">+ Tıklanabilir Link Ekle</button>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Atmosfer & Betimleme</label>
+                            <textarea id="f-desc" placeholder="O anın dokusu, kokusu, üstündeki kumaşın (Shibumi tarzı) hissi... Detaylıca yaz."></textarea>
                         </div>
                     </div>
+
+                    <!-- SAĞ SÜTUN: Duygular ve İşitsel -->
+                    <div class="form-sidebar">
+                        <div class="form-group">
+                            <label>Ön-Duygu (Kombini tasarlarken nasılsın?)</label>
+                            <div class="emotion-tags" id="pre-emotions-container">
+                                <div class="emotion-tag" onclick="toggleTag(this)">Mutlu</div>
+                                <div class="emotion-tag" onclick="toggleTag(this)">Huzurlu</div>
+                                <div class="emotion-tag" onclick="toggleTag(this)">Karışık / Bunalmış</div>
+                                <div class="emotion-tag" onclick="toggleTag(this)">Nötr</div>
+                                <div class="emotion-tag" onclick="toggleTag(this)">Aşk Dolu</div>
+                                <div class="custom-emotion">
+                                    <input type="text" id="custom-emotion-input" placeholder="Farklı his...">
+                                    <button type="button" class="btn" style="padding: 0.4rem 1rem;" onclick="addCustomEmotion()">Ekle</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 3rem;">
+                            <label>Ham Duygu Etiketi (Vizyonun hissiyatı)</label>
+                            <input type="text" id="f-raw-emotion" placeholder="Örn: Zarif ve Sarsılmaz">
+                        </div>
+
+                        <div class="form-group" style="margin-top: 3rem;">
+                            <label>Ambiyans Sesi (Pikap İçin Link)</label>
+                            <input type="text" id="f-audio" placeholder="Spotify veya YouTube Şarkı Linki">
+                            <small style="color: var(--text-muted); font-size: 0.8rem; display: block; margin-top: 0.5rem;">Bu link hafızada yer kaplamaz. Detay sayfasında Pikap'a tıkladığında şarkı açılır.</small>
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="form-group">
-                    <label>Ham Duygu Etiketi (Bu anın dürüst hissi)</label>
-                    <input type="text" id="f-raw-emotion" placeholder="Örn: Yorgun ama sarsılmaz">
-                </div>
-
-                <div class="form-group">
-                    <label>Atmosfer & Betimleme</label>
-                    <textarea id="f-desc" placeholder="O anın dokusu, kokusu, üstündeki kumaşın hissi... Detaylıca yaz."></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label>Görseller (Sınırsız eklenebilir)</label>
-                    <div id="media-container"></div>
-                    <button type="button" class="btn" onclick="addMediaField()" style="margin-top: 1rem;">+ Yeni Görsel Ekle</button>
-                </div>
-
-                <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 4rem;">
-                    <button type="button" class="btn" onclick="closeModals()" style="border:none; border-bottom: 1px solid var(--text-muted);">İptal Et</button>
-                    <button type="submit" class="btn">Arşive Kaydet</button>
+                <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 4rem; padding-top: 2rem; border-top: 1px solid var(--surface-color);">
+                    <button type="button" class="btn" onclick="closeModals()" style="border:none;">İptal Et</button>
+                    <button type="submit" class="btn" style="background: var(--text-primary); color: #fff;">Arşive Kaydet</button>
                 </div>
             </form>
         </div>
@@ -304,72 +394,88 @@
             <div class="modal-header">
                 <h2 class="modal-title" id="v-title">Başlık</h2>
                 <div style="display: flex; gap: 1rem;">
+                    <button class="btn" onclick="editVision()">Düzenle</button>
                     <button class="btn btn-danger" id="v-delete-btn">Sil</button>
-                    <button class="btn" onclick="closeModals()">Kapat</button>
+                    <button class="btn" onclick="closeModals()" style="border:none; font-size: 1.2rem;">✕</button>
                 </div>
             </div>
             
-            <div id="view-details">
-                <div class="view-meta" id="v-meta">Mekan - Kişiler</div>
-                
-                <div class="view-emotions" id="v-emotions-box">
-                    <!-- Dinamik rozetler buraya gelecek -->
+            <div class="view-layout">
+                <div class="view-main">
+                    <div class="view-meta" id="v-meta">Mekan - Kişiler</div>
+                    
+                    <div class="view-desc" id="v-desc"></div>
+                    
+                    <div class="inspiration-links" id="v-links">
+                        <!-- Tıklanabilir Linkler buraya gelecek -->
+                    </div>
+
+                    <div class="view-gallery" id="v-gallery">
+                        <!-- Görseller buraya -->
+                    </div>
                 </div>
 
-                <div class="view-desc" id="v-desc"></div>
-                
-                <div class="view-gallery" id="v-gallery">
-                    <!-- Görseller buraya -->
+                <div class="view-sidebar">
+                    <div class="view-emotions" id="v-emotions-box">
+                        <!-- Duygu rozetleri buraya -->
+                    </div>
+
+                    <!-- PİKAP (Plak Çalar) -->
+                    <div id="v-audio-container" style="display: none;">
+                        <label style="text-align: center; margin-bottom: 1rem;">Bu Anın Sesi</label>
+                        <div class="audio-player-wrapper">
+                            <div class="record" id="v-record" onclick="playAudio()">
+                                <div class="record-grooves"></div>
+                            </div>
+                            <small style="color: var(--text-muted);">Dinlemek için plağa tıkla</small>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Veritabanı (LocalStorage) Başlatma
-        let visions = JSON.parse(localStorage.getItem('zen_visions')) || [];
+        // Veritabanı
+        let visions = JSON.parse(localStorage.getItem('zen_visions_v2')) || [];
         let currentViewingId = null;
+        let editingId = null; // Düzenleme modu için
+        let currentAudioLink = "";
 
-        // Sayfa yüklendiğinde çalışacaklar
         document.addEventListener('DOMContentLoaded', () => {
             renderDashboard();
-            addMediaField(); // Forma varsayılan 1 medya alanı ekle
         });
 
-        // Dashboard'u Çiz
+        // Ana Sayfa Kartlarını Çiz
         function renderDashboard() {
             const grid = document.getElementById('dashboard-grid');
             grid.innerHTML = '';
 
             if (visions.length === 0) {
-                grid.innerHTML = '<div class="empty-state">Henüz bir vizyon eklenmedi. Yeni bir atmosfer yarat.</div>';
+                grid.innerHTML = '<div class="empty-state">Henüz bir vizyon eklenmedi. Gözlerini kapat, geleceği hayal et ve yeni bir atmosfer yarat.</div>';
                 return;
             }
 
-            // Yeniden eskiye sıralı
             [...visions].reverse().forEach(v => {
                 const card = document.createElement('div');
                 card.className = 'magazine-card';
                 card.onclick = () => openView(v.id);
                 
-                // Kapak görselini bul (ilk geçerli görsel)
-                let coverImg = 'https://images.unsplash.com/photo-1490641815614-b45106d6fd04?q=80&w=800&auto=format&fit=crop'; // Varsayılan boş doku
-                if(v.images && v.images.length > 0) {
-                    coverImg = v.images[0];
-                }
+                let coverImg = 'https://images.unsplash.com/photo-1518002171953-a080ee817e1f?q=80&w=800&auto=format&fit=crop'; // Toz pembe estetik default
+                if(v.images && v.images.length > 0) coverImg = v.images[0];
 
                 card.innerHTML = `
                     <img src="${coverImg}" class="card-img" alt="${v.title}">
                     <div class="card-content">
                         <div class="card-title">${v.title}</div>
-                        <div class="card-meta">${v.location || 'Bilinmeyen Zaman/Mekan'}</div>
+                        <div class="card-meta">${v.location || 'Bilinmeyen Mekan'}</div>
                     </div>
                 `;
                 grid.appendChild(card);
             });
         }
 
-        // --- TAG MANTIĞI ---
+        // --- TAG / DUYGU MANTIĞI ---
         function toggleTag(element) {
             element.classList.toggle('selected');
         }
@@ -389,31 +495,31 @@
             }
         }
 
-        function getSelectedEmotions() {
-            const tags = document.querySelectorAll('.emotion-tag.selected');
-            return Array.from(tags).map(t => t.textContent);
-        }
-
-        // --- MEDYA MANTIĞI ---
-        function addMediaField() {
-            const container = document.getElementById('media-container');
-            const id = Date.now();
+        // --- FORM MEDYA (Fotoğraf ve Link) YÖNETİMİ ---
+        function addImageField(val = "") {
+            const container = document.getElementById('image-container');
             const div = document.createElement('div');
-            div.className = 'media-group';
+            div.className = 'media-item';
             div.innerHTML = `
-                <button type="button" class="remove-media" onclick="this.parentElement.remove()">×</button>
-                <div class="media-row">
-                    <input type="text" class="media-url" placeholder="Görsel Linki (Örn: Pinterest imaj linki)">
-                </div>
-                <div style="font-size: 0.8rem; color: var(--text-muted); margin: 0.5rem 0; text-align: center;">-- VEYA YEREL FOTOĞRAF YÜKLE --</div>
-                <div class="media-row">
-                    <input type="file" accept="image/*" class="media-file">
-                </div>
+                <input type="file" accept="image/*" class="img-file" style="flex:1;">
+                <span style="font-size:0.8rem; color:var(--text-muted);">VEYA</span>
+                <input type="text" class="img-url" placeholder="Görsel Linki" value="${val}" style="flex:2;">
+                <button type="button" class="btn" style="padding:0.3rem 0.6rem; font-size:1rem;" onclick="this.parentElement.remove()">✕</button>
             `;
             container.appendChild(div);
         }
 
-        // Dosyayı Base64'e çeviren yardımcı fonksiyon
+        function addUrlField(val = "") {
+            const container = document.getElementById('link-container');
+            const div = document.createElement('div');
+            div.className = 'media-item';
+            div.innerHTML = `
+                <input type="text" class="ext-url" placeholder="Örn: https://pinterest.com/..." value="${val}" style="flex:1;">
+                <button type="button" class="btn" style="padding:0.3rem 0.6rem; font-size:1rem;" onclick="this.parentElement.remove()">✕</button>
+            `;
+            container.appendChild(div);
+        }
+
         function fileToBase64(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -423,64 +529,125 @@
             });
         }
 
-        // --- FORM İŞLEMLERİ ---
+        // --- KAYDET / GÜNCELLE ---
         document.getElementById('vision-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Görselleri topla (Hem URL hem File)
-            const mediaGroups = document.querySelectorAll('.media-group');
+            // Görselleri İşle
+            const imageItems = document.querySelectorAll('#image-container .media-item');
             let processedImages = [];
             
-            for (let group of mediaGroups) {
-                const urlInput = group.querySelector('.media-url').value.trim();
-                const fileInput = group.querySelector('.media-file').files[0];
+            for (let item of imageItems) {
+                const fileInput = item.querySelector('.img-file').files[0];
+                const urlInput = item.querySelector('.img-url').value.trim();
                 
                 if (fileInput) {
                     try {
                         const base64 = await fileToBase64(fileInput);
                         processedImages.push(base64);
-                    } catch(err) { console.error("Fotoğraf dönüştürülemedi", err); }
+                    } catch(err) { console.error("Fotoğraf dönüştürülemedi"); }
                 } else if (urlInput) {
                     processedImages.push(urlInput);
                 }
             }
 
-            const newVision = {
-                id: Date.now().toString(),
+            // Tıklanabilir Linkleri İşle
+            const linkItems = document.querySelectorAll('#link-container .ext-url');
+            let processedLinks = [];
+            linkItems.forEach(input => {
+                if(input.value.trim()) processedLinks.push(input.value.trim());
+            });
+
+            // Duyguları Al
+            const tags = document.querySelectorAll('.emotion-tag.selected');
+            const preEmotions = Array.from(tags).map(t => t.textContent);
+
+            const visionData = {
+                id: editingId ? editingId : Date.now().toString(),
                 title: document.getElementById('f-title').value,
                 location: document.getElementById('f-location').value,
                 people: document.getElementById('f-people').value,
-                preEmotions: getSelectedEmotions(),
+                preEmotions: preEmotions,
                 rawEmotion: document.getElementById('f-raw-emotion').value,
                 description: document.getElementById('f-desc').value,
+                audioUrl: document.getElementById('f-audio').value.trim(),
                 images: processedImages,
+                externalLinks: processedLinks,
                 dateAdded: new Date().toISOString()
             };
 
-            visions.push(newVision);
-            saveData();
+            if (editingId) {
+                const index = visions.findIndex(v => v.id === editingId);
+                visions[index] = visionData; // Mevcut olanı güncelle
+            } else {
+                visions.push(visionData); // Yeni ekle
+            }
             
+            saveData();
             closeModals();
             renderDashboard();
-            e.target.reset(); // Formu temizle
-            
-            // Etiket seçimlerini temizle
-            document.querySelectorAll('.emotion-tag.selected').forEach(t => t.classList.remove('selected'));
-            document.getElementById('media-container').innerHTML = ''; // Medyaları temizle
-            addMediaField(); // Tekrar 1 tane boş ekle
         });
 
-        function deleteVision(id) {
-            if(confirm("Bu vizyonu arşivden silmek istediğine emin misin? Bu işlem geri alınamaz.")) {
-                visions = visions.filter(v => v.id !== id);
-                saveData();
-                closeModals();
-                renderDashboard();
+        // --- DÜZENLEME (EDIT) MODU ---
+        function editVision() {
+            const v = visions.find(x => x.id === currentViewingId);
+            if(!v) return;
+
+            editingId = v.id;
+            document.getElementById('form-title').textContent = "Atmosferi Düzenle";
+            
+            // Formu doldur
+            document.getElementById('f-title').value = v.title;
+            document.getElementById('f-location').value = v.location || '';
+            document.getElementById('f-people').value = v.people || '';
+            document.getElementById('f-raw-emotion').value = v.rawEmotion || '';
+            document.getElementById('f-desc').value = v.description || '';
+            document.getElementById('f-audio').value = v.audioUrl || '';
+
+            // Duyguları işaretle
+            document.querySelectorAll('.emotion-tag').forEach(t => t.classList.remove('selected'));
+            if(v.preEmotions) {
+                const defaultTags = Array.from(document.querySelectorAll('.emotion-tag')).map(t => t.textContent);
+                v.preEmotions.forEach(emo => {
+                    if (defaultTags.includes(emo)) {
+                        Array.from(document.querySelectorAll('.emotion-tag')).find(t => t.textContent === emo).classList.add('selected');
+                    } else {
+                        // Özel eklenmiş duygu ise yeniden oluştur
+                        const newTag = document.createElement('div');
+                        newTag.className = 'emotion-tag selected';
+                        newTag.textContent = emo;
+                        newTag.onclick = function() { toggleTag(this); };
+                        const container = document.getElementById('pre-emotions-container');
+                        container.insertBefore(newTag, document.querySelector('.custom-emotion'));
+                    }
+                });
             }
+
+            // Medyaları doldur
+            document.getElementById('image-container').innerHTML = '';
+            if(v.images) {
+                v.images.forEach(img => addImageField(img.length > 500 ? "" : img)); // Base64 ise link kutusunu boş bırak
+            }
+            
+            document.getElementById('link-container').innerHTML = '';
+            if(v.externalLinks) {
+                v.externalLinks.forEach(link => addUrlField(link));
+            }
+
+            closeModals();
+            document.getElementById('form-modal').classList.add('active');
         }
 
-        // --- GÖRÜNÜM & MODAL KONTROLLERİ ---
+        // --- GÖRÜNÜM KONTROLLERİ ---
         function openForm() {
+            editingId = null;
+            document.getElementById('form-title').textContent = "Yeni Atmosfer Yarat";
+            document.getElementById('vision-form').reset();
+            document.querySelectorAll('.emotion-tag.selected').forEach(t => t.classList.remove('selected'));
+            document.getElementById('image-container').innerHTML = '';
+            document.getElementById('link-container').innerHTML = '';
+            addImageField(); // Varsayılan 1 tane boş kalsın
+            
             closeModals();
             document.getElementById('form-modal').classList.add('active');
         }
@@ -497,43 +664,82 @@
             if(v.people) metaText.push(`👥 ${v.people}`);
             document.getElementById('v-meta').textContent = metaText.join('  |  ');
 
-            // Duygu rozetleri
+            // Duygular
             const emotionsBox = document.getElementById('v-emotions-box');
             emotionsBox.innerHTML = '';
-            
             if(v.rawEmotion) {
-                emotionsBox.innerHTML += `<div class="view-emotion-badge" style="border-left: 2px solid var(--text-primary);">Ham: ${v.rawEmotion}</div>`;
+                emotionsBox.innerHTML += `<div class="view-emotion-badge" style="background: var(--text-primary); color: #fff;">His: ${v.rawEmotion}</div>`;
             }
             if(v.preEmotions && v.preEmotions.length > 0) {
                 v.preEmotions.forEach(emo => {
-                    emotionsBox.innerHTML += `<div class="view-emotion-badge">Yaratım Öncesi: ${emo}</div>`;
+                    emotionsBox.innerHTML += `<div class="view-emotion-badge">${emo}</div>`;
                 });
             }
 
             document.getElementById('v-desc').textContent = v.description;
+
+            // İlham Linkleri
+            const linksBox = document.getElementById('v-links');
+            linksBox.innerHTML = '';
+            if(v.externalLinks && v.externalLinks.length > 0) {
+                v.externalLinks.forEach((link, index) => {
+                    linksBox.innerHTML += `<a href="${link}" target="_blank" class="link-item">🔗 İlham Linki ${index + 1} &rarr;</a>`;
+                });
+            }
 
             // Galeri
             const gallery = document.getElementById('v-gallery');
             gallery.innerHTML = '';
             if(v.images && v.images.length > 0) {
                 v.images.forEach(imgSrc => {
-                    gallery.innerHTML += `<img src="${imgSrc}" alt="Vizyon Görseli">`;
+                    gallery.innerHTML += `<img src="${imgSrc}" alt="Vizyon">`;
                 });
             }
 
-            document.getElementById('v-delete-btn').onclick = () => deleteVision(v.id);
+            // Ses (Pikap) Kontrolü
+            const audioBox = document.getElementById('v-audio-container');
+            const record = document.getElementById('v-record');
+            record.classList.remove('playing'); // animasyonu sıfırla
+            if(v.audioUrl) {
+                currentAudioLink = v.audioUrl;
+                audioBox.style.display = 'flex';
+            } else {
+                audioBox.style.display = 'none';
+                currentAudioLink = "";
+            }
 
+            document.getElementById('v-delete-btn').onclick = () => deleteVision(v.id);
             document.getElementById('view-modal').classList.add('active');
+        }
+
+        function playAudio() {
+            if(currentAudioLink) {
+                const record = document.getElementById('v-record');
+                record.classList.add('playing');
+                // Linki yeni sekmede aç (Spotify, YouTube vs. için en güvenlisi)
+                window.open(currentAudioLink, '_blank');
+                // Bir süre sonra animasyonu durdur
+                setTimeout(() => record.classList.remove('playing'), 4000); 
+            }
+        }
+
+        function deleteVision(id) {
+            if(confirm("Bu atmosferi arşivden silmek istediğine emin misin?")) {
+                visions = visions.filter(v => v.id !== id);
+                saveData();
+                closeModals();
+                renderDashboard();
+            }
         }
 
         function closeModals() {
             document.getElementById('form-modal').classList.remove('active');
             document.getElementById('view-modal').classList.remove('active');
-            currentViewingId = null;
         }
 
         function saveData() {
-            localStorage.setItem('zen_visions', JSON.stringify(visions));
+            // İkinci versiyon (toz pembe) veritabanı adı
+            localStorage.setItem('zen_visions_v2', JSON.stringify(visions));
         }
     </script>
 </body>

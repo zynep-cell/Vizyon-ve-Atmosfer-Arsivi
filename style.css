@@ -1,0 +1,186 @@
+/* Toz Pembesi ve Soft Shibumi Paleti */
+:root {
+    --bg-color: #fcf6f6;
+    --surface-color: #f4e9e9;
+    --text-primary: #3a2b2b;
+    --text-muted: #8c7373;
+    --accent-color: #d6babb;
+    --danger-color: #a85c5c;
+    --font-serif: 'Playfair Display', serif;
+    --font-sans: 'Raleway', sans-serif;
+    --transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+header {
+    padding: 2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--accent-color);
+}
+
+.back-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    transition: var(--transition);
+}
+.back-link:hover { color: var(--text-primary); }
+
+.logo {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    font-weight: 600;
+}
+
+.btn {
+    background: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--accent-color);
+    padding: 0.6rem 1.5rem;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    transition: var(--transition);
+    border-radius: 4px;
+}
+.btn:hover { background: var(--text-primary); color: var(--bg-color); }
+.btn-danger { border-color: var(--danger-color); color: var(--danger-color); }
+.btn-danger:hover { background: var(--danger-color); color: #fff; }
+
+main { padding: 4rem; min-height: 80vh; }
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 3rem;
+}
+
+.magazine-card {
+    position: relative;
+    height: 480px;
+    background-color: var(--surface-color);
+    cursor: pointer;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    transition: var(--transition);
+}
+.magazine-card:hover { transform: translateY(-8px); box-shadow: 0 15px 40px rgba(0,0,0,0.08); }
+
+.card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: var(--transition);
+}
+.magazine-card:hover .card-img { transform: scale(1.05); }
+
+.card-content {
+    position: absolute;
+    bottom: 0; left: 0; width: 100%; padding: 2rem;
+    background: linear-gradient(to top, rgba(252, 246, 246, 0.95) 0%, rgba(252, 246, 246, 0.8) 50%, rgba(252, 246, 246, 0) 100%);
+}
+
+.card-title {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+.card-meta { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 500;}
+
+/* Arayüz / Modal Sınıfları */
+.overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: var(--bg-color); z-index: 100; overflow-y: auto;
+    display: none; opacity: 0; transition: opacity 0.4s ease;
+}
+.overlay.active { display: block; opacity: 1; }
+
+.modal-content {
+    max-width: 1000px; margin: 3rem auto; padding: 3rem;
+    background: #fff; border-radius: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+}
+
+.modal-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 3rem; border-bottom: 1px solid var(--accent-color); padding-bottom: 1.5rem;
+}
+
+.modal-title { font-family: var(--font-serif); font-size: 2.2rem; font-weight: 600; }
+
+.form-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 4rem; }
+@media (max-width: 768px) { .form-layout { grid-template-columns: 1fr; gap: 2rem; } }
+
+.form-group { margin-bottom: 2rem; }
+label {
+    display: block; font-size: 0.85rem; color: var(--text-muted);
+    letter-spacing: 1px; text-transform: uppercase; margin-bottom: 0.5rem; font-weight: 600;
+}
+input[type="text"], textarea {
+    width: 100%; background: transparent; border: none;
+    border-bottom: 1px solid var(--accent-color); color: var(--text-primary);
+    font-family: var(--font-sans); font-size: 1.1rem; padding: 0.8rem 0; transition: var(--transition);
+}
+input:focus, textarea:focus { outline: none; border-bottom-color: var(--text-primary); }
+textarea { resize: vertical; min-height: 120px; line-height: 1.8;}
+
+/* Etiketler (Duygu Seçimi) */
+.emotion-tags { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1rem; }
+.emotion-tag {
+    padding: 0.5rem 1.2rem; border: 1px solid var(--accent-color); border-radius: 30px;
+    font-size: 0.9rem; cursor: pointer; transition: var(--transition); user-select: none; background: #fff;
+}
+.emotion-tag.selected { background: var(--text-primary); color: #fff; border-color: var(--text-primary); }
+
+.custom-emotion { display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem; width: 100%; }
+.custom-emotion input { font-size: 0.9rem; border-bottom: 1px dashed var(--accent-color); padding: 0.4rem;}
+
+/* Medya Araçları */
+.media-list { display: flex; flex-direction: column; gap: 1rem; margin-top: 1rem;}
+.media-item { display: flex; gap: 1rem; align-items: center; background: var(--surface-color); padding: 0.8rem; border-radius: 6px;}
+.media-item input { border: none; padding: 0.2rem; font-size: 0.9rem; }
+
+/* Detay Görünümü */
+#view-details { font-family: var(--font-serif); position: relative;}
+.view-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 4rem; }
+@media (max-width: 768px) { .view-layout { grid-template-columns: 1fr; } }
+
+.view-meta { color: var(--text-muted); font-family: var(--font-sans); font-size: 1rem; margin-bottom: 1.5rem; letter-spacing: 1px; font-weight: 500;}
+.view-emotions { margin-bottom: 2rem; font-family: var(--font-sans); display: flex; gap: 1rem; flex-wrap: wrap; }
+.view-emotion-badge { background: var(--surface-color); padding: 0.5rem 1rem; border-radius: 30px; font-size: 0.85rem; color: var(--text-primary); border: 1px solid var(--accent-color);}
+
+.view-desc { font-size: 1.25rem; line-height: 1.9; margin-bottom: 3rem; white-space: pre-wrap; color: var(--text-primary); }
+
+.view-gallery { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-bottom: 3rem;}
+.view-gallery img { width: 100%; height: auto; border-radius: 8px; box-shadow: 0 10px 20px rgba(0,0,0,0.05);}
+
+.inspiration-links { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; font-family: var(--font-sans);}
+.link-item { display: inline-block; padding: 0.8rem 1.5rem; background: #fff; border: 1px solid var(--accent-color); border-radius: 4px; text-decoration: none; color: var(--text-primary); transition: var(--transition); font-size: 0.9rem;}
+.link-item:hover { background: var(--surface-color); transform: translateX(5px);}
+
+/* Pikap (Ses) Animasyonu */
+.audio-player-wrapper { margin-top: 1rem; padding: 2rem; background: var(--surface-color); border-radius: 12px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+.record { width: 120px; height: 120px; background: #222; border-radius: 50%; border: 4px solid #111; position: relative; cursor: pointer; box-shadow: 0 10px 20px rgba(0,0,0,0.2); transition: transform 0.3s ease; }
+.record:hover { transform: scale(1.05); }
+.record.playing { animation: spin 4s linear infinite; }
+.record::before { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 40px; height: 40px; background: var(--accent-color); border-radius: 50%; }
+.record::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 8px; height: 8px; background: #fff; border-radius: 50%; }
+.record-grooves { position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px; border-radius: 50%; border: 1px solid rgba(255,255,255,0.1); box-shadow: inset 0 0 0 10px rgba(0,0,0,0.5), inset 0 0 0 20px rgba(255,255,255,0.05); }
+@keyframes spin { 100% { transform: rotate(360deg); } }
+.empty-state { text-align: center; color: var(--text-muted); font-family: var(--font-serif); font-size: 1.3rem; margin-top: 5rem; grid-column: 1 / -1;}
